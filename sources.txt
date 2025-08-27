@@ -47,3 +47,7 @@ http://www.garrisontoronto.com/
 https://www.rcmusic.com/concerts
 https://www.leespalace.com/events
 https://toronto-ruby.com/events
+https://www.eventbrite.com/d/canada--toronto/%s/
+https://luma.com/toronto
+https://www.google.com/search?q=%s+in+toronto,+on&ibp=htl;events#htichips=&fpstate=tldetail&htischips=&htivrt=events
+https://docs.google.com/spreadsheets/d/1e7Nxtoac0uM11Jo61iapFZM8EHimSNdIenM9GAwajoQ/edit?gid=0#gid=0
