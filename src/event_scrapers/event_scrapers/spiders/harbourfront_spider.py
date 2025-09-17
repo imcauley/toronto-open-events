@@ -5,6 +5,10 @@ class HarbourfrontSpider(scrapy.Spider):
     name = "harbourfront"
     start_urls = ["https://harbourfrontcentre.com/whats-on/"]
 
+    shared_attributes = {
+        "organizer": "Harbourfront Centre",
+    }
+
     def parse(self, response):
         event_htmls = self.get_all_events(response)
         with open(self.name + ".jsonl", "a") as file:
@@ -19,7 +23,8 @@ class HarbourfrontSpider(scrapy.Spider):
     def event_html_to_object(self, event_html):
         return {
             "date": event_html.xpath("*/div[1]/div[1]/text()").get().strip(),
-            "title": event_html.xpath("*/div[1]/div[2]/text()").get().strip(),
+            "name": event_html.xpath("*/div[1]/div[2]/text()").get().strip(),
             "link": event_html.xpath("a/@href").get(),
             "description": event_html.xpath("*/div[1]/div[4]/text()").get().strip(),
+            **self.shared_attributes,
         }
