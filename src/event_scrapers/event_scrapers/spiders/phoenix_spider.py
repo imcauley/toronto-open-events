@@ -1,4 +1,7 @@
+import datetime
 import scrapy
+from scrapy.loader import ItemLoader
+from event_item import EventItem
 
 
 class PhoenixSpider(scrapy.Spider):
@@ -7,16 +10,19 @@ class PhoenixSpider(scrapy.Spider):
 
     def parse(self, response):
         event_htmls = self.get_all_events(response)
-        with open(self.name + ".jsonl", "a") as file:
-            for e in event_htmls:
-                file.write(str(self.event_html_to_object(e)) + "\n")
+        for e in event_htmls:
+            yield self.event_html_to_object(e)
 
     def get_all_events(self, response):
         return response.css(".event-item")
 
     def event_html_to_object(self, event_html):
-        return {
-            "date": event_html.css("header.event-date::text").get().strip(),
-            "title": event_html.css("span.sr-only::text").get(),
-            "link": event_html.css("a").attrib["href"],
-        }
+        loader = ItemLoader(item=EventItem(), response=event_html)
+        loader.add_value(
+            "start_date", event_html.css("header.event-date::text").get().strip()
+        )
+        loader.add_value("name", event_html.css("span.sr-only::text").get())
+        loader.add_value("organizer", "Phoenix Theatre")
+        loader.add_value("start_date", datetime.datetime.now())
+        loader.add_value("url", event_html.css("a").attrib["href"])
+        return loader.load_item()
