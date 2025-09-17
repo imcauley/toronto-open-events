@@ -10,4 +10,7 @@ from itemadapter import ItemAdapter
 
 class EventScrapersPipeline:
     def process_item(self, item, spider):
+        with open(spider.name + ".jsonl", "a") as file:
+            file.write(str(item) + "\n")
+
         return item
